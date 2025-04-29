@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MKE Booch – Coming Soon</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #000;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+      text-align: center;
+    }
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      max-width: 600px;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 400px;
+    }
+    input[type="email"] {
+      padding: 0.8rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      margin-bottom: 1rem;
+    }
+    button {
+      padding: 0.8rem;
+      font-size: 1rem;
+      font-weight: bold;
+      background-color: #fff;
+      color: #000;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #ccc;
+    }
+    .message {
+      margin-top: 1rem;
+    }
+    .success {
+      color: #0f0;
+    }
+    .error {
+      color: #f00;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>MKE Booch</h1>
+  <p>Craft brewed kombucha. Smooth. Alive. Local.<br />Coming soon to SE Wisconsin.</p>
+
+  <form id="emailForm">
+    <input type="email" id="emailInput" placeholder="Enter your email address" required />
+    <button type="submit">Join the Launch List</button>
+  </form>
+
+  <div id="message" class="message"></div>
+
+  <script>
+    const form = document.getElementById('emailForm');
+    const emailInput = document.getElementById('emailInput');
+    const messageDiv = document.getElementById('message');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = emailInput.value.trim();
+      messageDiv.textContent = '';
+      messageDiv.className = 'message';
+
+      if (!email) {
+        messageDiv.textContent = 'Please enter a valid email address.';
+        messageDiv.classList.add('error');
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+
+        const result = await res.json();
+
+        if (res.ok) {
+          messageDiv.textContent = 'You’re on the list! Welcome to BoochYa!';
+          messageDiv.classList.add('success');
+          emailInput.value = '';
+        } else {
+          messageDiv.textContent = result.message || 'Something went wrong.';
+          messageDiv.classList.add('error');
+        }
+      } catch (err) {
+        console.error(err);
+        messageDiv.textContent = 'Something went wrong. Try again later.';
+        messageDiv.classList.add('error');
+      }
+    });
+  </script>
+
+</body>
+</html>
