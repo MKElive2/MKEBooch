@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Unsubscribe – MKE Booch</title>
+  <style>
+    body {
+      background: #000;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+      padding: 3rem;
+    }
+    input {
+      padding: 0.5rem;
+      width: 300px;
+      margin-bottom: 1rem;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Unsubscribe</h1>
+  <p>We’ll miss you, but we’ll stop emailing you.</p>
+
+  <form id="unsubscribeForm">
+    <input type="email" id="emailInput" disabled />
+    <br />
+    <button type="submit">Unsubscribe</button>
+  </form>
+
+  <div id="message"></div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const email = params.get("email");
+    const emailInput = document.getElementById("emailInput");
+    if (email) {
+      emailInput.value = email;
+    }
+
+    document.getElementById("unsubscribeForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      // Since disabled fields don't get sent, use the value manually:
+      const res = await fetch("/api/unsubscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email })
+      });
+
+      const result = await res.json();
+      const msg = document.getElementById("message");
+
+      if (res.ok) {
+        msg.textContent = "You've been unsubscribed. We'll leave you be.";
+        msg.style.color = "lime";
+      } else {
+        msg.textContent = result.message || "Something went wrong.";
+        msg.style.color = "red";
+      }
+    });
+  </script>
+</body>
+</html>
