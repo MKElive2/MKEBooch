@@ -26,12 +26,14 @@ export default async function handler(req, res) {
       from: 'welcome@mkebooch.com',
       subject: 'Welcome to MKE Booch!',
       text: 'Thanks for signing up! We\'ll keep you posted as we get ready to launch!',
-      html: `<p><strong>Thanks for signing up!</strong><br><br>We can't wait to bring BoochYa! to SE Wisconsin. Stay tuned for launch announcements!`<p>
-      <p style="font-size: 0.8rem; color: #999;">
-  Don’t want to hear from us again? 
-  <a href="https://mkebooch.com/unsubscribe.html?email={{email}}">Unsubscribe here</a>
-</p>
-,
+      html: `
+  <p><strong>Thanks for signing up!</strong><br><br>
+  We can't wait to bring BoochYa! to SE Wisconsin. Stay tuned for launch announcements!</p>
+  <p style="font-size: 0.8rem; color: #999;">
+    Don’t want to hear from us again? 
+    <a href="https://mkebooch.com/unsubscribe.html?email=${email}">Unsubscribe here</a>
+  </p>
+`
     });
 
     // If send succeeds, insert into Supabase
