@@ -1,0 +1,17 @@
+{
+    "name": "mkebooch",
+    "version": "1.0.0",
+    "description": "Landing page and API for MKE Booch",
+    "main": "index.html",
+    "type": "module",
+    "scripts": {
+        "start": "echo 'Static site only'"
+    },
+    "dependencies": {
+        "@sendgrid/mail": "^7.7.0",
+        "@supabase/supabase-js": "^2.49.4"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC"
+}
